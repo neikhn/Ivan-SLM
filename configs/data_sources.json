@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "seed": 42,
+  "split_ratios": {"train": 0.9, "validation": 0.05, "test": 0.05},
+  "training_phases": [
+    {"tokens": 80000000, "tier_ratios": {"tier_1": 0.55, "tier_2": 0.35, "tier_3": 0.1}},
+    {"tokens": 20000000, "tier_ratios": {"tier_1": 0.2, "tier_2": 0.4, "tier_3": 0.4}}
+  ],
+  "total_training_tier_ratios": {"tier_1": 0.48, "tier_2": 0.36, "tier_3": 0.16},
+  "language_ratios_per_tier": {"en": 0.5, "vi": 0.5},
+  "tokenizer": {
+    "vocab_size": 8192,
+    "tier_ratios": {"tier_1": 0.4, "tier_2": 0.4, "tier_3": 0.2},
+    "special_tokens": ["<pad>", "<bos>", "<eos>", "<|en|>", "<|vi|>", "<|user|>", "<|assistant|>"]
+  },
+  "limits": {
+    "preview_rows_per_source": 3,
+    "pilot_max_scanned_rows_per_source": 100000,
+    "pilot_max_bytes": 2000000000,
+    "data_and_cache_max_bytes": 10000000000,
+    "project_max_bytes": 30000000000
+  },
+  "pilot_targets": {
+    "tier_1": {"en": 1000, "vi": 1000},
+    "tier_2": {"en": 500, "vi": 500},
+    "tier_3": {"en": 30, "vi": 30}
+  },
+  "quality_review": {"samples": 100, "reject_if_serious_errors_at_least": 10},
+  "sources": [
+    {
+      "key": "wiki_en",
+      "dataset_id": "wikimedia/wikipedia",
+      "subset": "20231101.en",
+      "split": "train",
+      "revision": "b04c8d1ceb2f5cd4588862100d08de323dccfbaa",
+      "language": "en",
+      "eligible_tiers": ["tier_1"],
+      "text_field": "text",
+      "source_id_field": "id",
+      "license_metadata": ["cc-by-sa-3.0", "gfdl"],
+      "source_url": "https://huggingface.co/datasets/wikimedia/wikipedia"
+    },
+    {
+      "key": "wiki_vi",
+      "dataset_id": "wikimedia/wikipedia",
+      "subset": "20231101.vi",
+      "split": "train",
+      "revision": "b04c8d1ceb2f5cd4588862100d08de323dccfbaa",
+      "language": "vi",
+      "eligible_tiers": ["tier_1", "tier_2"],
+      "text_field": "text",
+      "source_id_field": "id",
+      "license_metadata": ["cc-by-sa-3.0", "gfdl"],
+      "source_url": "https://huggingface.co/datasets/wikimedia/wikipedia"
+    },
+    {
+      "key": "cosmopedia_en",
+      "dataset_id": "HuggingFaceTB/smollm-corpus",
+      "subset": "cosmopedia-v2",
+      "split": "train",
+      "revision": "3ba9d605774198c5868892d7a8deda78031a781f",
+      "language": "en",
+      "eligible_tiers": ["tier_2"],
+      "text_field": "text",
+      "source_id_field": null,
+      "license_metadata": ["odc-by"],
+      "source_url": "https://huggingface.co/datasets/HuggingFaceTB/smollm-corpus"
+    }
+  ],
+  "manual_source": {
+    "key": "project_notes",
+    "tier": "tier_3",
+    "languages": ["en", "vi"],
+    "pilot_topic_pairs": 30,
+    "words_per_document": {"min": 150, "max": 300},
+    "status": "not_written",
+    "review_required": true,
+    "instruction": "Write paired explanatory notes with shared group_id; exclude unmeasured training results and SFT test questions."
+  }
+}
